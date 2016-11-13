@@ -1,0 +1,22 @@
+﻿@model IEnumerable<DomainObject.Race>
+
+<body>
+    @foreach (var item in Model)
+    {
+        <table class="table">
+            <tr>
+                <td>
+                    @Html.DisplayFor(itemModel => item.Name) 
+                </td>
+                <td>
+                    @Html.DisplayFor(itemModel => item.Distance) km
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Partial("ListOfCars")
+                </td>
+            </tr>
+        </table>
+    }
+</body>

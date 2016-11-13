@@ -1,0 +1,72 @@
+﻿@model DomainObject.Car
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create Car</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NameCar, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NameCar)
+                @Html.ValidationMessageFor(model => model.NameCar)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Speed, "Speed km/h", new { @class = "control-label col-md-2" }) 
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Speed)
+                @Html.ValidationMessageFor(model => model.Speed)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DeltaAcceleration, "DeltaAcceleration %", new { @class = "control-label col-md-2" }) 
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DeltaAcceleration)
+                @Html.ValidationMessageFor(model => model.DeltaAcceleration)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AccelerationInterval, "AccelerationInterval ms", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.AccelerationInterval)
+                @Html.ValidationMessageFor(model => model.AccelerationInterval)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DurationOfAcceleration, "DurationOfAcceleration ms", new { @class = "control-label col-md-2" }) 
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DurationOfAcceleration)
+                @Html.ValidationMessageFor(model => model.DurationOfAcceleration)
+            </div>
+        </div>
+        @*<div class="form-group">
+            @Html.ActionLink()
+           @Html.LabelFor(model => model.Hot, new { @class = "control-label col-md-2" })
+                *<div class="col-md-10">
+                    @Html.EditorFor(model => model.Hot)
+                    @Html.ValidationMessageFor(model => model.Hot)
+                </div>
+        </div>*@
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create Car" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+
+}

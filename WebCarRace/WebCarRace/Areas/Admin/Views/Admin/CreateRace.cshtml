@@ -1,0 +1,45 @@
+﻿@model DomainObject.Race
+@{
+    ViewBag.Title = "Create Race";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create Race</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Distance, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Distance)
+                @Html.ValidationMessageFor(model => model.Distance)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.ActionLink("Add Car", "CreateCar", new { controller = "Admin", area = "Admin" })
+        </div>
+
+        <div>
+            @Html.Partial("ListOfCars")
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Start Race" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}

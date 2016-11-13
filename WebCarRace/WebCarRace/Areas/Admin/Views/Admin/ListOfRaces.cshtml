@@ -1,0 +1,29 @@
+﻿@model IEnumerable<DomainObject.Race>
+@{
+    ViewBag.Title = "ListOfRaces";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>List Of Races</h2>
+
+@Html.ActionLink("Create Race", "CreateRace", new { controller = "Admin", area = "Admin" })|
+
+
+@using (Ajax.BeginForm("FindRace", new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            UpdateTargetId = "update",
+            LoadingElementId = "loader"
+        }))
+{
+    @Html.TextBox("nameRace")
+    <input type="submit" value="Search" />
+}
+
+@* ... *@
+<div id="loader" class=" aletr" style="display:none">
+    Loading...
+</div>
+<div id="update">
+    @Html.Partial("SearchRaceView", Model)
+</div>

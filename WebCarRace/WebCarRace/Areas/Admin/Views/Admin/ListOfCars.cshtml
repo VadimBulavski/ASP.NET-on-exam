@@ -1,0 +1,21 @@
+﻿@model IEnumerable<DomainObject.Car>
+
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+        <table class="table">
+            <tr>
+                <td>
+                    @Html.DisplayFor(itemModel => item.NameCar)
+                </td>
+                <td>
+                    <div style="background-color:aliceblue">
+                        @Html.DisplayFor(itemModel => item.Distance)
+                    </div>
+                </td>
+            </tr>
+        </table>
+    }
+}
+
