@@ -21,28 +21,36 @@ namespace WebCarRace.Areas.Admin.Controllers
             return View(_service.GetAllRaces());
         }
 
-        public ActionResult CreateRace()//Race race)
+        public ActionResult CreateRace(int? id)//Race race)
         {
-            //if(race != null)
-            //{
-            //    return View(race);
-            //}
-            //else
-            //{
-            //    return View();
-            //}
-            return View();
+            if (id != null)
+            {
+                Race race = db.Races.Where(r => r.RaceID == id).FirstOrDefault();
+                return View(race);
+            }
+            else
+            {
+                return View();
+            }
+            //return View();
         }
 
-        [HttpPost, ActionName("CreateRace")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateRaceConfirmed(Race race)
+        public ActionResult CreateRace(Race race, string action)
         {
             if(ModelState.IsValid)
             {
                 db.Races.Add(race);
                 db.SaveChanges();
-                return RedirectToAction("ListOfRaces");
+                if (action == "Create")
+                {
+                    return RedirectToAction("CreateRac", race.RaceID);
+                }
+                else if (action == "Start Race")
+                {
+                    return RedirectToAction("ListOfRaces");
+                } 
             }
             return View(race);
         }
@@ -71,22 +79,28 @@ namespace WebCarRace.Areas.Admin.Controllers
 
         //
         // GET: /Admin/Admin/Create
-        public ActionResult CreateCar()
+        public ActionResult CreateCar(int id)
         {
-            return View();
+            //if(id != null)
+            //{
+            //    db.Races.Where(r => r.RaceID == id);
+            //}
+            return View(id);
         }
 
         //
         // POST: /Admin/Admin/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateCar(Car car)
+        public ActionResult CreateCar(Car car, int id)
         {
             if(ModelState.IsValid)
             {
-                db.Cars.Add(car);
+                Race race = db.Races.Where(r => r.RaceID == id).FirstOrDefault();
+                race.Cars.Add(car);
+                //db.Cars.Add(car);
                 db.SaveChanges();
-                return RedirectToAction("CreateRace");
+                return RedirectToAction("CreateRace", race.RaceID);
             }
             return View(car);
         }

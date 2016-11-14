@@ -1,8 +1,8 @@
-﻿@model IEnumerable<DomainObject.Car>
+﻿@model DomainObject.Race
 
 @if (Model != null)
 {
-    foreach (var item in Model)
+    foreach (var item in Model.Cars)
     {
         <table class="table">
             <tr>

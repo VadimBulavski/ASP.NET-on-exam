@@ -6,6 +6,7 @@
 
 <h2>Create Race</h2>
 
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -16,7 +17,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Name)
+                @Html.EditorFor(model => model.Name, new{ @class = "raceName" })
                 @Html.ValidationMessageFor(model => model.Name)
             </div>
         </div>
@@ -24,22 +25,71 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Distance, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Distance)
+                @Html.EditorFor(model => model.Distance, new{ @class = "distance" })
                 @Html.ValidationMessageFor(model => model.Distance)
             </div>
-        </div>
-        <div class="form-group">
-            @Html.ActionLink("Add Car", "CreateCar", new { controller = "Admin", area = "Admin" })
-        </div>
-
-        <div>
-            @Html.Partial("ListOfCars")
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Start Race" class="btn btn-default" />
+                <input type="submit" name="action" value="Create" id ="createRace" class="btn btn-default" />
+            </div>
+        </div>
+
+        @if (Model != null)
+        {
+            <div class="form-group">
+                @Html.ActionLink("Add Car", "CreateCar", new { controller = "Admin", area = "Admin", id = Model.RaceID })
+            </div>
+
+            <div>
+                @foreach(var item in Model.Cars)
+                {
+                    <table class="table">
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(itemModel => item.NameCar)
+                            </td>
+                            <td>
+                                <div style="background-color:aliceblue">
+                                    @Html.DisplayFor(itemModel => item.Distance)
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                }
+                @*@Html.Partial("ListOfCars")*@
+            </div>
+        }
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" name="action" value="Start Race" class="btn btn-default" />
             </div>
         </div>
     </div>
+
+
 }
+
+@*@section Scripts {
+    @Scripts.Render("~/bundles/jquery")
+
+    <script>
+        $("createRace").click(function createRace() {
+            var name = $("raceName").text;
+            //var distance = $("distance").val;
+            @using(RaceContext.RaceCarContext db = new RaceContext.RaceCarContext())
+        {
+               DomainObject.Race race = new DomainObject.Race();
+
+               race.Name = name;
+            race.Distance = Double.Parse();
+            db.Races.Add(race);
+            db.SaveChanges();
+        }
+        })     
+    </script>
+}*@
