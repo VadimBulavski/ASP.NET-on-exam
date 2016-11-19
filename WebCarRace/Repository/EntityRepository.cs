@@ -10,9 +10,9 @@ namespace Repository
     public class EntityRepository:IRepository
     {
         private RaceCarContext _context = null;
-        public EntityRepository()
+        public EntityRepository(RaceCarContext cont)
         {
-            _context = new RaceCarContext();
+            _context = cont;
         }
         public IEnumerable<DomainObject.Race> GetAllRaces()
         {

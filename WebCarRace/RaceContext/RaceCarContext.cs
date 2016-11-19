@@ -10,7 +10,7 @@ namespace RaceContext
 {
     public class RaceCarContext : DbContext
     {
-        public RaceCarContext() : base("RaceCar") { }
+        public RaceCarContext(string connectionStr = "DefaultConnection") : base(connectionStr) { }
 
         public DbSet<Race> Races { get; set; }
         public DbSet<Car> Cars { get; set; }

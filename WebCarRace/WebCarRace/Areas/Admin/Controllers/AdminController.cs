@@ -6,14 +6,21 @@ using System.Web;
 using System.Web.Mvc;
 using Repository;
 using RaceContext;
+using Service;
 
 namespace WebCarRace.Areas.Admin.Controllers
 {
     public class AdminController : Controller
     {
+        RaceCarContext db;
+        private IService _service = null;
 
-        EntityRepository _service = new EntityRepository();
-        RaceCarContext db = new RaceCarContext();
+       
+        public AdminController(IService service, RaceCarContext context)
+        {
+            _service = service;
+            db = context;
+        }
         //
         // GET: /Admin/Admin/
         public ActionResult ListOfRaces()
@@ -25,7 +32,7 @@ namespace WebCarRace.Areas.Admin.Controllers
         {
             if (id != null)
             {
-                Race race = db.Races.Where(r => r.RaceID == id).FirstOrDefault();
+                Race race = db.Races.FirstOrDefault(r => r.RaceID == id);
                 return View(race);
             }
             else
@@ -41,11 +48,11 @@ namespace WebCarRace.Areas.Admin.Controllers
         {
             if(ModelState.IsValid)
             {
-                db.Races.Add(race);
-                db.SaveChanges();
                 if (action == "Create")
                 {
-                    return RedirectToAction("CreateRac", race.RaceID);
+                    db.Races.Add(race);
+                    db.SaveChanges();
+                    return RedirectToAction("CreateRace", new { id = race.RaceID });
                 }
                 else if (action == "Start Race")
                 {
@@ -79,13 +86,13 @@ namespace WebCarRace.Areas.Admin.Controllers
 
         //
         // GET: /Admin/Admin/Create
-        public ActionResult CreateCar(int id)
+        public ActionResult CreateCar()
         {
             //if(id != null)
             //{
             //    db.Races.Where(r => r.RaceID == id);
             //}
-            return View(id);
+            return View();
         }
 
         //
@@ -96,11 +103,12 @@ namespace WebCarRace.Areas.Admin.Controllers
         {
             if(ModelState.IsValid)
             {
-                Race race = db.Races.Where(r => r.RaceID == id).FirstOrDefault();
+                Race race = db.Races.FirstOrDefault(r => r.RaceID == id);
+                race.Cars = new List<Car>();
                 race.Cars.Add(car);
                 //db.Cars.Add(car);
                 db.SaveChanges();
-                return RedirectToAction("CreateRace", race.RaceID);
+                return RedirectToAction("CreateRace", new { id = race.RaceID });
             }
             return View(car);
         }

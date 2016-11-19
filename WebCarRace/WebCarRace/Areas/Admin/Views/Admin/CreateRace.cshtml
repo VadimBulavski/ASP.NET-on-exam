@@ -41,8 +41,9 @@
             <div class="form-group">
                 @Html.ActionLink("Add Car", "CreateCar", new { controller = "Admin", area = "Admin", id = Model.RaceID })
             </div>
-
-            <div>
+            if(Model.Cars != null)
+            {
+              <div>
                 @foreach(var item in Model.Cars)
                 {
                     <table class="table">
@@ -60,7 +61,9 @@
 
                 }
                 @*@Html.Partial("ListOfCars")*@
-            </div>
+            </div>  
+            }
+            
         }
 
 

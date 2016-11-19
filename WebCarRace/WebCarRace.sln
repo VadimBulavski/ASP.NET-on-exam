@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebCarRace", "WebCarRace\WebCarRace.csproj", "{C061CA82-AB47-4E2D-ABBC-A288C394D06B}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainObject", "DomainObject\DomainObject.csproj", "{3952FBC2-31D1-4750-BFCD-A4DD0825DB66}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{7D185F0E-F8CE-443C-BB07-506FCFB1AB70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{46A2BD82-27CD-4DEA-A108-52C080E667BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{7D185F0E-F8CE-443C-BB07-506FCFB1AB70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D185F0E-F8CE-443C-BB07-506FCFB1AB70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D185F0E-F8CE-443C-BB07-506FCFB1AB70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46A2BD82-27CD-4DEA-A108-52C080E667BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46A2BD82-27CD-4DEA-A108-52C080E667BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46A2BD82-27CD-4DEA-A108-52C080E667BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46A2BD82-27CD-4DEA-A108-52C080E667BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
