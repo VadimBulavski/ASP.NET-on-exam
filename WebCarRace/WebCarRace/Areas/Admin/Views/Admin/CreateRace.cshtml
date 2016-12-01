@@ -36,12 +36,15 @@
             </div>
         </div>
 
-        @if (Model != null)
+        @if (Model != null && Html.ViewData.ModelState.IsValid)
         {
             <div class="form-group">
                 @Html.ActionLink("Add Car", "CreateCar", new { controller = "Admin", area = "Admin", id = Model.RaceID })
             </div>
-            if(Model.Cars != null)
+            <div>
+                @Html.Partial("ListOfCars")
+            </div>
+            @*if(Model.Cars != null )
             {
               <div>
                 @foreach(var item in Model.Cars)
@@ -59,10 +62,10 @@
                         </tr>
                     </table>
 
-                }
+                }*@
                 @*@Html.Partial("ListOfCars")*@
-            </div>  
-            }
+            @*</div>  
+            }*@
             
         }
 
