@@ -71,7 +71,7 @@ namespace WebCarRace.Areas.Admin.Controllers
             }
             else
             {
-                return View("Index", _service.GetAllRaces());
+                return View("ListOfRaces", _service.GetAllRaces());
             }
 
         }
@@ -79,9 +79,17 @@ namespace WebCarRace.Areas.Admin.Controllers
 
         //
         // GET: /Admin/Admin/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
-            return View();
+            if(id != null)
+            {
+                return View(_service.GetCar((int)id));
+            }
+            else
+            {
+                return View();
+            }
+           
         }
 
         //
