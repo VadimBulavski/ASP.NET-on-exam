@@ -5,12 +5,12 @@
     foreach (var item in Model.Cars)
     {
         <table class="table">
-            <tr>
-                <td>
+            <tr class="row">
+                <td class="col-lg-2" style="background-color:blue; color:white">
                     @Html.DisplayFor(itemModel => item.NameCar)
                 </td>
-                <td>
-                    <div style="background-color:aliceblue">
+                <td class="col-lg-10">
+                    <div style="background-color:orange; width:10px">
                         @Html.DisplayFor(itemModel => item.Distance)
                     </div>
                 </td>
