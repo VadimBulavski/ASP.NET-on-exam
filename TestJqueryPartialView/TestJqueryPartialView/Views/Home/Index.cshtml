@@ -1,31 +1,56 @@
 ﻿@{
     ViewBag.Title = "Index";
-
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Index</h2>
 
 
-
 <div class="item">
-    <input type="button" class="detailsButton" />
-    <div class="details" style="visibility:hidden">
-        Partial View
-    </div>
+    <input type="button" id="detailsButton" />
 </div>
+<div id="dialog" style="display: none"></div>
 
 
-@*@Html.Partial("TestPV")*@
+@*<div>
+        @Html.Partial("TestPV")
+    </div>*@
 
 @section scripts
 {
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryui")
-    @Scripts.Render("~/bundles/jqueryval")
-    <script>
-        $(".detailsButton").click(function () {
-            $(".details").toggle();
+
+    <script type="text/javascript">
+        $(function () {
+            //$("#dialog").dialog({
+            //    autoOpen: false,
+            //    modal: true,
+            //    title: "View Details"
+            //});
+            $("#detailsButton").click(function () {
+                //var customerId = $(this).closest("tr").find("td").eq(0).html();
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/TestPV",
+                    //data: '{customerId: "' + customerId + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $('#dialog').html(response);
+                        //$('#dialog').dialog('open');
+                        $('#dialog').toggle();
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
         });
     </script>
 }
+
+
+

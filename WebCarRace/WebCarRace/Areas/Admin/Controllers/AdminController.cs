@@ -78,16 +78,16 @@ namespace WebCarRace.Areas.Admin.Controllers
 
 
         //
-        // GET: /Admin/Admin/Details/5
-        public ActionResult Details(int? id)
+        [HttpPost]
+        public ActionResult Details(int? carID)
         {
-            if(id != null)
+            if(carID != null)
             {
-                return View(_service.GetCar((int)id));
+                return PartialView(_service.GetCar((int)carID));
             }
             else
             {
-                return View();
+                return PartialView();
             }
            
         }

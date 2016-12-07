@@ -9,12 +9,12 @@
         <table class="table">
             <tr class="row">
 
-                <td class="carName" class="col-lg-2" style="background-color:blue; color:white; font-size:14pt">
-                    <input type="button" class="DetailButton" value="@Html.DisplayFor(itemModel => item.NameCar)" />
-                    @*<div id="hide" onclick="showDetails">
+                <td class="col-lg-2" style="background-color:blue; color:white; font-size:14pt">
+                    <input type="button" id="DetailButton" value="@Html.DisplayFor(itemModel => item.NameCar)" />
+                    <input type="hidden" id="carId" value="@Html.DisplayFor(itemModel => item.CarID)" />
+                           @*<div id="hide" onclick="showDetails">
                             @Html.DisplayFor(itemModel => item.NameCar)
-                        </div>*@
-                </td>
+                        </div>*@></td>
                 <td class="col-lg-10" style="background-color:grey">
                     <div style="background-color:orange; width:100%; position:relative;
                                                 color:white; font-size:14pt; text-align:left">
@@ -24,19 +24,45 @@
                 </td>
             </tr>
         </table>
-        <div class="details">
-            @Html.Partial("DetailsCar", item)
-        </div>
+    <div id="details" style="display: none">
+
+    </div>
     }
 }
-@section Scripts {
-    @Scripts.Render("~/bundles/jquery-ui")
-    <script>
-        $(document).ready(function () {
-            alert("ddddddd");
-        })
-        $(document).on('click', '.DetailButton', function () {
-            $(this).closest('.carName').find('.details').toggle();
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+
+    <script type="text/javascript">
+        $(function () {
+            //$("#dialog").dialog({
+            //    autoOpen: false,
+            //    modal: true,
+            //    title: "View Details"
+            //});
+            $("#DetailButton").click(function () {
+                var carId = $("#carID").eq(0).html(); //$(this).closest("tr").find("td").eq(0).html();
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/TestPV",
+                    data: '{carId: "' + carId + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $('#details').html(response);
+                        //$('#dialog').dialog('open');
+                        $('#details').toggle();
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
         });
     </script>
 }

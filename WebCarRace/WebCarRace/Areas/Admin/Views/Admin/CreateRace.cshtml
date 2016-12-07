@@ -56,14 +56,4 @@
 
 
 }
-@section Scripts {
-    @Scripts.Render("~/bundles/jquery-ui")
-    <script>
-        $(document).ready(function () {
-            alert("ddddddd");
-        })
-        $(document).on('click', '.DetailButton', function () {
-            $(this).closest('.carName').find('.details').toggle();
-        });
-    </script>
-}
+
