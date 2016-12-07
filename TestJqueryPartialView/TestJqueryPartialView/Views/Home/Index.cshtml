@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Index";
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+
+
+<div class="item">
+    <input type="button" class="detailsButton" />
+    <div class="details" style="visibility:hidden">
+        Partial View
+    </div>
+</div>
+
+
+@*@Html.Partial("TestPV")*@
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(".detailsButton").click(function () {
+            $(".details").toggle();
+        });
+    </script>
+}
