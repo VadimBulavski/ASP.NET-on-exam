@@ -5,16 +5,44 @@
     {
         <table class="table">
             <tr>
-                <td>
-                    @Html.DisplayFor(itemModel => item.Name) 
-                </td>
-                <td>
+                <td >
+                    Race: 
+                    @Html.DisplayFor(itemModel => item.Name)<br/> 
+                    Distance:
                     @Html.DisplayFor(itemModel => item.Distance) km
                 </td>
+               <!---<td style="width:80%">
+                    Distance: 
+                    @Html.DisplayFor(itemModel => item.Distance) km
+                </td>-->
             </tr>
             <tr>
-                <td>
-                    @Html.Partial("ListOfCars")
+                <td id="details">
+                    Cars: 
+                    @Html.Partial("ListOfCars", item)
+                    @*@if (item.Cars != null)
+                    {
+                    <div>
+                        Cars: 
+                        @foreach (var car in item.Cars)
+                        {
+                            <table class="table">
+                                <tr class="row">
+                                    <td class="col-lg-2">
+                                        @Html.DisplayFor(itemModel => car.NameCar)    
+                                    </td>
+                                    <td class="col-lg-10">
+                                        <div>Distance:</div>
+                                        <div style="background-color:orange; float:left; width:0">
+                                            @Html.DisplayFor(itemModel => car.Distance)
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        }
+                    </div>
+                    }*@
                 </td>
             </tr>
         </table>

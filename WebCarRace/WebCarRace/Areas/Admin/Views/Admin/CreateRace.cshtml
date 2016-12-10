@@ -31,7 +31,7 @@
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div id="create" class="col-md-offset-2 col-md-10">
                 <input type="submit" name="action" value="Create" id ="createRace" class="btn btn-default" />
             </div>
         </div>
@@ -41,29 +41,9 @@
             <div class="form-group">
                 @Html.ActionLink("Add Car", "CreateCar", new { controller = "Admin", area = "Admin", id = Model.RaceID })
             </div>
-            if(Model.Cars != null)
-            {
-              <div>
-                @foreach(var item in Model.Cars)
-                {
-                    <table class="table">
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(itemModel => item.NameCar)
-                            </td>
-                            <td>
-                                <div style="background-color:aliceblue">
-                                    @Html.DisplayFor(itemModel => item.Distance)
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-
-                }
-                @*@Html.Partial("ListOfCars")*@
-            </div>  
-            }
-            
+            <div>
+                @Html.Partial("ListOfCars", Model)
+            </div>
         }
 
 

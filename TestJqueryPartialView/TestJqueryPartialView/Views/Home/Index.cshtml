@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+
+<div class="item">
+    <input type="button" id="detailsButton" />
+</div>
+<div id="dialog" style="display: none"></div>
+
+
+@*<div>
+        @Html.Partial("TestPV")
+    </div>*@
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+
+    <script type="text/javascript">
+        $(function () {
+            //$("#dialog").dialog({
+            //    autoOpen: false,
+            //    modal: true,
+            //    title: "View Details"
+            //});
+            $("#detailsButton").click(function () {
+                //var customerId = $(this).closest("tr").find("td").eq(0).html();
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/TestPV",
+                    //data: '{customerId: "' + customerId + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $('#dialog').html(response);
+                        //$('#dialog').dialog('open');
+                        $('#dialog').toggle();
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+
+

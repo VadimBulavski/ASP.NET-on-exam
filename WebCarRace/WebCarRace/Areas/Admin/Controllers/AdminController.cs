@@ -28,7 +28,7 @@ namespace WebCarRace.Areas.Admin.Controllers
             return View(_service.GetAllRaces());
         }
 
-        public ActionResult CreateRace(int? id)//Race race)
+        public ActionResult CreateRace(int? id)
         {
             if (id != null)
             {
@@ -67,21 +67,29 @@ namespace WebCarRace.Areas.Admin.Controllers
         {
             if (Request.IsAjaxRequest())
             {
-                return PartialView("SearchNewsView", _service.GetNameRace(nameRace));
+                return PartialView("SearchRaceView", _service.GetNameRace(nameRace));
             }
             else
             {
-                return View("Index", _service.GetAllRaces());
+                return View("ListOfRaces", _service.GetAllRaces());
             }
 
         }
 
 
         //
-        // GET: /Admin/Admin/Details/5
-        public ActionResult Details(int id)
+        [HttpPost]
+        public ActionResult Details(int? carID)
         {
-            return View();
+            if(carID != null)
+            {
+                return PartialView(_service.GetCar((int)carID));
+            }
+            else
+            {
+                return PartialView();
+            }
+           
         }
 
         //
@@ -104,7 +112,7 @@ namespace WebCarRace.Areas.Admin.Controllers
             if(ModelState.IsValid)
             {
                 Race race = db.Races.FirstOrDefault(r => r.RaceID == id);
-                if(race.Cars == null)
+                if (race.Cars == null)
                 {
                     race.Cars = new List<Car>();
                 }
