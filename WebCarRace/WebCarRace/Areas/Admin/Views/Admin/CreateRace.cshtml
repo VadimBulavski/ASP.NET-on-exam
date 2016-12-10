@@ -36,7 +36,7 @@
             </div>
         </div>
 
-        @if (Model != null)
+        @if (Model != null && Html.ViewData.ModelState.IsValid)
         {
             <div class="form-group">
                 @Html.ActionLink("Add Car", "CreateCar", new { controller = "Admin", area = "Admin", id = Model.RaceID })
@@ -77,22 +77,3 @@
 
 }
 
-@*@section Scripts {
-    @Scripts.Render("~/bundles/jquery")
-
-    <script>
-        $("createRace").click(function createRace() {
-            var name = $("raceName").text;
-            //var distance = $("distance").val;
-            @using(RaceContext.RaceCarContext db = new RaceContext.RaceCarContext())
-        {
-               DomainObject.Race race = new DomainObject.Race();
-
-               race.Name = name;
-            race.Distance = Double.Parse();
-            db.Races.Add(race);
-            db.SaveChanges();
-        }
-        })     
-    </script>
-}*@

@@ -104,7 +104,10 @@ namespace WebCarRace.Areas.Admin.Controllers
             if(ModelState.IsValid)
             {
                 Race race = db.Races.FirstOrDefault(r => r.RaceID == id);
-                race.Cars = new List<Car>();
+                if(race.Cars == null)
+                {
+                    race.Cars = new List<Car>();
+                }
                 race.Cars.Add(car);
                 //db.Cars.Add(car);
                 db.SaveChanges();
