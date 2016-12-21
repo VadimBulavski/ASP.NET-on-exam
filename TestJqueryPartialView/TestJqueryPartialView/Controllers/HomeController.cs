@@ -21,5 +21,9 @@ namespace TestJqueryPartialView.Controllers
             return PartialView();
         }
 
+        public ActionResult TestIndex()
+        {
+            return PartialView();
+        }
     }
 }

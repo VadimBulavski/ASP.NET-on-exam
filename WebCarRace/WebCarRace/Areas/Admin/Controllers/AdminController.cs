@@ -79,7 +79,7 @@ namespace WebCarRace.Areas.Admin.Controllers
 
         //
         [HttpPost]
-        public ActionResult Details(int? carID)
+        public ActionResult DetailsCar(int? carID)
         {
             if(carID != null)
             {
