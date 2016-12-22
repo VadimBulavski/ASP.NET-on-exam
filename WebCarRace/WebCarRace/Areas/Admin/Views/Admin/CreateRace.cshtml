@@ -38,8 +38,8 @@
 
         @if (Model != null && Html.ViewData.ModelState.IsValid)
         {
-            <div class="form-group">
-                @Html.ActionLink("Add Car", "CreateCar", new { controller = "Admin", area = "Admin", id = Model.RaceID })
+            <div class="form-group" style="margin-left:8%; font-size:14pt">
+                @Html.ActionLink("+ Add Car", "CreateCar", new { controller = "Admin", area = "Admin", id = Model.RaceID })
             </div>
             <div>
                 @if (Model.Cars != null)
@@ -48,13 +48,12 @@
                     {
                         <table class="table">
                             <tr class="row">
-
-                                <td class="col-lg-2" style="background-color:blue; color:white; font-size:14pt">
-                                    <input type="button" class="DetailButton" value="@Html.DisplayFor(itemModel => item.NameCar)" />
+                                <td class ="col-lg-1" style="background-color:blue; color:white; font-size:14pt">
+                                    @Html.DisplayFor(itemModel => item.NameCar)
+                                </td >
+                                <td class="col-lg-1" style="background-color:blue">
+                                    <input type="button" class="DetailButton" value="Details" />
                                     <input type="hidden" class="carId" value="@Html.DisplayFor(itemModel => item.CarID)" />
-                                    @*<div id="hide" onclick="showDetails">
-                                @Html.DisplayFor(itemModel => item.NameCar)
-                            </div> *@
                                 </td>
                                 <td class="col-lg-10" style="background-color:grey">
                                     <div style="background-color:orange; width:100%; position:relative;
@@ -70,8 +69,6 @@
                         </div>
                     }
                 }
-
-               @** @Html.Partial("ListOfCars", Model) *@
             </div>
         }
 
@@ -90,39 +87,13 @@
 
     <script>
         $(document).ready(function () {
-            //$("#dialog").dialog({
-            //    autoOpen: false,
-            //    modal: true,
-            //    title: "View Details"
-            //});
             $(".DetailButton").click(function () {
-                var carId = $(".carId").eq(0).val(); //$(this).closest("tr").find("td").eq(0).html();
-                @*$.ajax({
-                    type: "POST",
-                    url: '@Url.Action("DetailsCar", "Admin", new {Area = "Admin"})',//"Admin/Admin/Details",
-                    data: parseInt(carId),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "html",
-                    success: function (response) {
-                        $('#details').html(response);
-                        //$('#dialog').dialog('open');
-                        $('#details').toggle();
-                    },
-                    failure: function (response) {
-                        alert(response.responseText);
-                    },
-                    error: function (response) {
-                        alert(response.responseText);
-                    }
-                });*@
+                var carId = $(this).siblings('.carId').val();
+                var $details = $(this).parents('table').next();
                 $.post('@Url.Action("DetailsCar", "Admin", new {Area = "Admin"})', { carID: carId }, function (data) {
-                    var $details = $(this).next('.details');
-                    $('.details').html(data);
-                    $details.slideToggle();
-                    $('.details').not($details).slideUp()
-                    //alert("CarId:"+carId);
-                });
-               
+                    $details.html(data);
+                    $details.toggle(1000);
+                });  
             });
         });
     </script>

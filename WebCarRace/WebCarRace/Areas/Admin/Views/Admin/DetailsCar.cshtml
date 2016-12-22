@@ -1,21 +1,39 @@
 ﻿@model DomainObject.Car
 
 <body>
-    <div>
-        Speed:
-        @Html.DisplayFor(itemModel=>Model.Speed)
-    </div>
-    <div>
-        DeltaAcceleration:
-        @Html.DisplayFor(itemModel=>Model.DeltaAcceleration)
-    </div>
-    <div>
-        AccelerationInterval:
-        @Html.DisplayFor(itemModel=>Model.AccelerationInterval)
-    </div>
-    <div>
-        DurationOfAcceleration:
-        @Html.DisplayFor(itemModel=>Model.DurationOfAcceleration)
-    </div>
+    <table>
+        <tr>
+            <td>
+                Speed:
+            </td>
+            <td>
+                @Html.DisplayFor(itemModel => Model.Speed)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                DeltaAcceleration:
+            </td>
+            <td>
+                @Html.DisplayFor(itemModel => Model.DeltaAcceleration)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                AccelerationInterval:
+            </td>
+            <td>
+                @Html.DisplayFor(itemModel => Model.AccelerationInterval)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                DurationOfAcceleration:
+            </td>
+            <td>
+                @Html.DisplayFor(itemModel => Model.DurationOfAcceleration)
+            </td>
+        </tr>
+    </table>
 </body>
 
