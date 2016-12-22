@@ -50,8 +50,8 @@
                             <tr class="row">
 
                                 <td class="col-lg-2" style="background-color:blue; color:white; font-size:14pt">
-                                    <input type="button" id="DetailButton" value="@Html.DisplayFor(itemModel => item.NameCar)" />
-                                    <input type="hidden" id="carId" value="@Html.DisplayFor(itemModel => item.CarID)" />
+                                    <input type="button" class="DetailButton" value="@Html.DisplayFor(itemModel => item.NameCar)" />
+                                    <input type="hidden" class="carId" value="@Html.DisplayFor(itemModel => item.CarID)" />
                                     @*<div id="hide" onclick="showDetails">
                                 @Html.DisplayFor(itemModel => item.NameCar)
                             </div> *@
@@ -65,7 +65,7 @@
                                 </td>
                             </tr>
                         </table>
-                        <div id="details" style="display: none">
+                        <div class="details" style="display: none">
 
                         </div>
                     }
@@ -86,21 +86,21 @@
     @section scripts
 {
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/jquery-ui")
 
-    <script type="text/javascript">
-        $(function () {
+    <script>
+        $(document).ready(function () {
             //$("#dialog").dialog({
             //    autoOpen: false,
             //    modal: true,
             //    title: "View Details"
             //});
-            $("#DetailButton").click(function () {
-                var carId = $("#carID").eq(0).html(); //$(this).closest("tr").find("td").eq(0).html();
-                $.ajax({
+            $(".DetailButton").click(function () {
+                var carId = $(".carId").eq(0).val(); //$(this).closest("tr").find("td").eq(0).html();
+                @*$.ajax({
                     type: "POST",
                     url: '@Url.Action("DetailsCar", "Admin", new {Area = "Admin"})',//"Admin/Admin/Details",
-                    data: '{carId: "' + carId + '" }',
+                    data: parseInt(carId),
                     contentType: "application/json; charset=utf-8",
                     dataType: "html",
                     success: function (response) {
@@ -114,7 +114,15 @@
                     error: function (response) {
                         alert(response.responseText);
                     }
+                });*@
+                $.post('@Url.Action("DetailsCar", "Admin", new {Area = "Admin"})', { carID: carId }, function (data) {
+                    var $details = $(this).next('.details');
+                    $('.details').html(data);
+                    $details.slideToggle();
+                    $('.details').not($details).slideUp()
+                    //alert("CarId:"+carId);
                 });
+               
             });
         });
     </script>
