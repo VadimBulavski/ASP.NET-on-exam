@@ -3,48 +3,67 @@
 <body>
     @foreach (var item in Model)
     {
-        <table class="table">
-            <tr>
-                <td >
-                    Race: 
-                    @Html.DisplayFor(itemModel => item.Name)<br/> 
-                    Distance:
-                    @Html.DisplayFor(itemModel => item.Distance) km
-                </td>
-               <!---<td style="width:80%">
-                    Distance: 
-                    @Html.DisplayFor(itemModel => item.Distance) km
-                </td>-->
-            </tr>
-            <tr>
-                <td id="details">
-                    Cars: 
-                    @Html.Partial("ListOfCars", item)
-                    @*@if (item.Cars != null)
-                    {
-                    <div>
-                        Cars: 
-                        @foreach (var car in item.Cars)
+        <div>
+            <table class="table">
+                <tr>
+                    <td>
+                        Race:
+                        @Html.DisplayFor(itemModel => item.Name)<br />
+                        Distance:
+                        @Html.DisplayFor(itemModel => item.Distance) km
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Cars:
+                        @if (item.Cars != null)
                         {
-                            <table class="table">
-                                <tr class="row">
-                                    <td class="col-lg-2">
-                                        @Html.DisplayFor(itemModel => car.NameCar)    
-                                    </td>
-                                    <td class="col-lg-10">
-                                        <div>Distance:</div>
-                                        <div style="background-color:orange; float:left; width:0">
-                                            @Html.DisplayFor(itemModel => car.Distance)
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
+                            foreach (var car in item.Cars)
+                            {
+                                <table class="table">
+                                    <tr class="row">
+                                        <td class="col-lg-1" style="background-color:blue; color:white; font-size:14pt">
+                                            @Html.DisplayFor(itemModel => car.NameCar)
+                                        </td>
+                                        <td class="col-lg-1" style="background-color:blue">
+                                            <input type="button" class="DetailButton" value="Details" />
+                                            <input type="hidden" class="carId" value="@Html.DisplayFor(itemModel => car.CarID)" />
+                                        </td>
+                                        <td class="col-lg-10" style="background-color:grey">
+                                            <div style="background-color:orange; width:100%; position:relative;
+                                                color:white; font-size:14pt; text-align:left">
+                                                Distance:
+                                                @Html.DisplayFor(itemModel => car.Distance) km
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="details" style="display: none">
 
+                                </div>
+                            }
                         }
-                    </div>
-                    }*@
-                </td>
-            </tr>
-        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+    @section scripts
+{
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/jquery-ui")
+        @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
+        <script>
+        $(document).ready(function () {
+            $(".DetailButton").click(function () {
+                var carId = $(this).siblings('.carId').val();
+                var $details = $(this).parents('table').next();
+                $.post('@Url.Action("DetailsCar", "Admin", new {Area = "Admin"})', { carID: carId }, function (data) {
+                    $details.html(data);
+                    $details.toggle(1000);
+                });
+            });
+        });
+        </script>
     }
 </body>

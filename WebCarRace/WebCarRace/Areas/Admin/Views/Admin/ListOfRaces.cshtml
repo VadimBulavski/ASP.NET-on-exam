@@ -8,7 +8,6 @@
 
 @Html.ActionLink("Create Race", "CreateRace", new { controller = "Admin", area = "Admin" })
 
-
 @using (Ajax.BeginForm("FindRace", new AjaxOptions
         {
             InsertionMode = InsertionMode.Replace,
@@ -17,7 +16,7 @@
         }))
 {
     @Html.TextBox("nameRace")
-    <input type="submit" value="Search" />
+    <input type="submit" value="Search" /> 
 }
 
 @* ... *@
@@ -27,3 +26,20 @@
 <div id="update">
     @Html.Partial("SearchRaceView", Model)
 </div>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jquery-ui")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
+    <script>
+        $("#update").on('click', ':button', function () {
+            var carId = $(this).siblings('.carId').val();
+            var $details = $(this).parents('table').next();
+            $.post('@Url.Action("DetailsCar", "Admin", new {Area = "Admin"})', { carID: carId }, function (data) {
+                $details.html(data);
+                $details.toggle(1000);
+            });
+        });
+    </script>
+}
