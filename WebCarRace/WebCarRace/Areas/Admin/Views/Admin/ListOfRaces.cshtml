@@ -16,16 +16,17 @@
         }))
 {
     @Html.TextBox("nameRace")
-    <input type="submit" value="Search" /> 
+    <input type="submit" value="Search" />
 }
 
 @* ... *@
 <div id="loader" class=" aletr" style="display:none">
     Loading...
 </div>
-<div id="update">
+<div id="update" title="Editor for Indicators">
     @Html.Partial("SearchRaceView", Model)
 </div>
+<div id="dialogListOfRace"></div>
 
 @section scripts
 {
@@ -33,7 +34,8 @@
     @Scripts.Render("~/bundles/jquery-ui")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
     <script>
-        $("#update").on('click', ':button', function () {
+        //просмотр деталей авто
+        $("#update").on('click', '.DetailButton', function () {
             var carId = $(this).siblings('.carId').val();
             var $details = $(this).parents('table').next();
             $.post('@Url.Action("DetailsCar", "Admin", new {Area = "Admin"})', { carID: carId }, function (data) {
@@ -41,5 +43,56 @@
                 $details.toggle(1000);
             });
         });
+
+
+        //вызов окна для редактирования показателей
+        $(function () {
+            $("#dialogListOfRace").dialog({
+                autoOpen: false,
+                hide: "puff",
+                show: "slide",
+                bgiframe: true,
+                width: 'auto',
+                height: 'auto',
+                modal: true,
+                buttons: [
+                    {
+                        text: "Close",
+                        click: function () {
+                            $(this).dialog("close");
+                        }
+                    },
+                     {
+                         text: "Update",
+                         click: function () {
+                             $.post('@Url.Action("Edit", "Admin", new {Area = "Admin"})',
+                                 {
+                                     //CarId: data.CarID,
+                                     NameCar: data.NameCar,
+                                     Speed: data.Speed,
+                                     //Distance: data.Distance,
+                                     DeltaAcceleration: data.DeltaAcceleration,
+                                     AccelerationInterval: data.AccelerationInterval,
+                                     DurationOfAcceleration: data.DurationOfAcceleration
+                                 },
+                                 function (data) {
+                                    
+                                 });
+                         }
+                     }
+                ]
+            });
+
+            $("#update").on('click', '.EditButton', function () {
+                var carId = $(this).siblings('.carId').val();
+                var $details = $(this).parents('table').next();
+                $.get('@Url.Action("Edit", "Admin", new {Area = "Admin"})', { carID: carId }, function (data) {
+                    $("#dialogListOfRace").html(data);
+                    $("#dialogListOfRace").dialog("open");
+                    alert($(this).data());
+                });
+            });
+        });
+        
     </script>
 }

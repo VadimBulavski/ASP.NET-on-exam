@@ -41,9 +41,11 @@
             <div class="form-group" style="margin-left:8%; font-size:14pt">
                 @Html.ActionLink("+ Add Car", "CreateCar", new { controller = "Admin", area = "Admin", id = Model.RaceID })
             </div>
+            
             <div>
                 @if (Model.Cars != null)
                 {
+                    <div id="dialogCreateRace"></div>
                     foreach (var item in Model.Cars)
                     {
                         <table class="table">
@@ -53,7 +55,9 @@
                                 </td >
                                 <td class="col-lg-1" style="background-color:blue">
                                     <input type="button" class="DetailButton" value="Details" />
+                                    <input type="button" class="EditButton" value="Edit" />
                                     <input type="hidden" class="carId" value="@Html.DisplayFor(itemModel => item.CarID)" />
+                                    
                                 </td>
                                 <td class="col-lg-10" style="background-color:grey">
                                     <div style="background-color:orange; width:100%; position:relative;
@@ -94,6 +98,49 @@
                     $details.html(data);
                     $details.toggle(1000);
                 });  
+            });
+        });
+
+        $(document).ready(function () {
+            $("#dialogCreateRace").dialog({
+                autoOpen: false,
+                hide: "puff",
+                show: "slide",
+                bgiframe: true,
+                width: 'auto',
+                height: 'auto',
+                modal: true,
+                buttons: [
+                    {
+                        text: "Close",
+                        click: function () {
+                            $(this).dialog("close");
+                        }
+                    },
+                     {
+                         text: "Update",
+                         click: function () {
+                             $.post('@Url.Action("Edit", "Admin", new {Area = "Admin"})',
+                                 {
+                                     CarId: data.CarID,
+                                     NameCar: data.NameCar,
+                                     Speed: data.Speed,
+                                     Distance: data.Distance,
+                                     DeltaAcceleration: data.DeltaAcceleration,
+                                     AccelerationInterval: data.AccelerationInterval,
+                                     DurationOfAcceleration: data.DurationOfAcceleration
+                                 });
+                         }
+                     }
+                ]
+            });
+            $(".EditButton").click(function () {
+                var carId = $(this).siblings('.carId').val();
+                var $details = $(this).parents('table').next();
+                $.get('@Url.Action("Edit", "Admin", new {Area = "Admin"})', { carID: carId }, function (data) {
+                    $("#dialogCreateRace").html(data);
+                    $("#dialogCreateRace").dialog("open");
+                });
             });
         });
     </script>

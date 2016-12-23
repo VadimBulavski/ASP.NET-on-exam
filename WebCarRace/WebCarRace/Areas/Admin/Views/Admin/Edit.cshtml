@@ -1,0 +1,75 @@
+﻿@model DomainObject.Car
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @*@Html.ActionLink("Back", "ListOfRaces", new { controller = "Admin", area = "Admin" })*@
+    <dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.NameCar):
+        </dt>
+        <dd>
+            @Html.EditorFor(model => model.NameCar)
+            @Html.ValidationMessageFor(model => model.NameCar)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Speed):
+        </dt>
+        <dd>
+            @Html.EditorFor(model => model.Speed)
+            @Html.ValidationMessageFor(model => model.Speed)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DeltaAcceleration):
+        </dt>
+        <dd>
+            @Html.EditorFor(model => model.DeltaAcceleration)
+            @Html.ValidationMessageFor(model => model.DeltaAcceleration)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AccelerationInterval):
+        </dt>
+        <dd>
+            @Html.EditorFor(model => model.AccelerationInterval)
+            @Html.ValidationMessageFor(model => model.AccelerationInterval)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DurationOfAcceleration):
+        </dt>
+        <dd>
+            @Html.EditorFor(model => model.DurationOfAcceleration)
+            @Html.ValidationMessageFor(model => model.DurationOfAcceleration)
+        </dd>
+    </dl>
+    @Html.HiddenFor(model => model.CarID)
+    @Html.HiddenFor(model => model.Distance)
+    @*<div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Update" class="btn btn-default" />
+        </div>
+    </div>*@
+}
+@*@if (Model.Cars != null)
+{
+    foreach (var item in Model.Cars)
+    {
+        <table class="table">
+            <tr class="row">
+
+                <td class="col-lg-2" style="background-color:blue; color:white; font-size:14pt">
+                    <input type="button" id="DetailButton" value="@Html.DisplayFor(itemModel => item.NameCar)" />
+                    <input type="hidden" id="carId" value="@Html.DisplayFor(itemModel => item.CarID)" />
+                </td>
+                <td class="col-lg-10" style="background-color:grey">
+                    <div style="background-color:orange; width:100%; position:relative;
+                                                color:white; font-size:14pt; text-align:left">
+                        Distance:
+                        @Html.DisplayFor(itemModel => item.Distance) km
+                    </div>
+                </td>
+            </tr>
+        </table>
+    }
+}*@

@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using Repository;
 using RaceContext;
 using Service;
+using System.Net;
 
 namespace WebCarRace.Areas.Admin.Controllers
 {
@@ -111,7 +112,7 @@ namespace WebCarRace.Areas.Admin.Controllers
         {
             if(ModelState.IsValid)
             {
-                Race race = db.Races.FirstOrDefault(r => r.RaceID == id);
+                Race race = _service.GetRace(id); //db.Races.FirstOrDefault(r => r.RaceID == id);
                 if (race.Cars == null)
                 {
                     race.Cars = new List<Car>();
@@ -126,26 +127,38 @@ namespace WebCarRace.Areas.Admin.Controllers
 
         //
         // GET: /Admin/Admin/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? carID)
         {
-            return View();
+            if (carID == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Car nextCar = _service.GetCar((int)carID);
+            if (nextCar == null)
+            {
+                return HttpNotFound();
+            }
+            return PartialView("Edit", nextCar);
         }
 
         //
         // POST: /Admin/Admin/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Object nextCar)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+                var newCar= db.Cars.Where(s => s.CarID == (nextCar as Car).CarID).FirstOrDefault();
+                newCar.NameCar = (nextCar as Car).NameCar;
+                newCar.Speed = (nextCar as Car).Speed;
+                newCar.DeltaAcceleration = (nextCar as Car).DeltaAcceleration;
+                newCar.AccelerationInterval = (nextCar as Car).AccelerationInterval;
+                newCar.DurationOfAcceleration = (nextCar as Car).DurationOfAcceleration;
+                db.SaveChanges();
+                return RedirectToAction("ListOfRaces");
             }
-            catch
-            {
-                return View();
-            }
+            return View(nextCar);
         }
 
         //
