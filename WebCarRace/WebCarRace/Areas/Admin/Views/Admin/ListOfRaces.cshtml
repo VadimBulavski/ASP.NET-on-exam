@@ -1,4 +1,5 @@
-﻿@model IEnumerable<DomainObject.Race>
+﻿@using DomainObject; 
+@model IEnumerable<DomainObject.Race>
 @{
     ViewBag.Title = "ListOfRaces";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -65,19 +66,25 @@
                      {
                          text: "Update",
                          click: function () {
+                             var car = {
+                                 CarId: $("#CarID").val(),
+                                 NameCar: $("#NameCar").val(),
+                                 Speed: $("#Speed").val(),
+                                 Distance: $("#Distance").val(),
+                                 DeltaAcceleration: $("#DeltaAcceleration").val(),
+                                 AccelerationInterval: $("#AccelerationInterval").val(),
+                                 DurationOfAcceleration: $("#DurationOfAcceleration").val(),
+                             };
                              $.post('@Url.Action("Edit", "Admin", new {Area = "Admin"})',
-                                 {
-                                     //CarId: data.CarID,
-                                     NameCar: data.NameCar,
-                                     Speed: data.Speed,
-                                     //Distance: data.Distance,
-                                     DeltaAcceleration: data.DeltaAcceleration,
-                                     AccelerationInterval: data.AccelerationInterval,
-                                     DurationOfAcceleration: data.DurationOfAcceleration
-                                 },
-                                 function (data) {
-                                    
-                                 });
+                                                               {
+                                                                   Car: car
+                                                               });
+                             //var ok = confirm("Save the Changes?");
+
+                             //if (ok) {
+                                
+                             //    $(this).dialog("close");
+                             //}
                          }
                      }
                 ]
@@ -89,10 +96,10 @@
                 $.get('@Url.Action("Edit", "Admin", new {Area = "Admin"})', { carID: carId }, function (data) {
                     $("#dialogListOfRace").html(data);
                     $("#dialogListOfRace").dialog("open");
-                    alert($(this).data());
+                    alert(data);
                 });
             });
         });
-        
+
     </script>
 }

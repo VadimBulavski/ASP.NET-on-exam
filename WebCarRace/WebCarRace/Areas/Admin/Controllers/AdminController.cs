@@ -144,7 +144,7 @@ namespace WebCarRace.Areas.Admin.Controllers
         //
         // POST: /Admin/Admin/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult Edit(Object nextCar)
         {
             if (ModelState.IsValid)
@@ -158,7 +158,7 @@ namespace WebCarRace.Areas.Admin.Controllers
                 db.SaveChanges();
                 return RedirectToAction("ListOfRaces");
             }
-            return View(nextCar);
+            return PartialView(nextCar);
         }
 
         //
