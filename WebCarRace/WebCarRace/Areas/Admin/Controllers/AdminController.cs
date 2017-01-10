@@ -14,6 +14,7 @@ namespace WebCarRace.Areas.Admin.Controllers
     public class AdminController : Controller
     {
         RaceCarContext db;
+        string requestPathAction = null;
         private IService _service = null;
 
        
@@ -59,6 +60,10 @@ namespace WebCarRace.Areas.Admin.Controllers
                 {
                     return RedirectToAction("ListOfRaces");
                 } 
+                else if(action == "Edit")
+                {
+                    requestPathAction = @Request.Path;
+                }
             }
             return View(race);
         }
@@ -127,38 +132,47 @@ namespace WebCarRace.Areas.Admin.Controllers
 
         //
         // GET: /Admin/Admin/Edit/5
-        public ActionResult Edit(int? carID)
+        public ActionResult EditCar(int? carID)
         {
             if (carID == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            
             Car nextCar = _service.GetCar((int)carID);
             if (nextCar == null)
             {
                 return HttpNotFound();
             }
-            return PartialView("Edit", nextCar);
+            return View(nextCar);
         }
 
         //
         // POST: /Admin/Admin/Edit/5
         [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public ActionResult Edit(Object nextCar)
+        [ValidateAntiForgeryToken]
+        public ActionResult EditCar(Car nextCar)
         {
             if (ModelState.IsValid)
             {
-                var newCar= db.Cars.Where(s => s.CarID == (nextCar as Car).CarID).FirstOrDefault();
-                newCar.NameCar = (nextCar as Car).NameCar;
-                newCar.Speed = (nextCar as Car).Speed;
-                newCar.DeltaAcceleration = (nextCar as Car).DeltaAcceleration;
-                newCar.AccelerationInterval = (nextCar as Car).AccelerationInterval;
-                newCar.DurationOfAcceleration = (nextCar as Car).DurationOfAcceleration;
+                var newCar= db.Cars.Where(s => s.CarID == nextCar.CarID).FirstOrDefault();
+                newCar.NameCar = nextCar.NameCar;
+                newCar.Speed = nextCar.Speed;
+                newCar.DeltaAcceleration = nextCar.DeltaAcceleration;
+                newCar.AccelerationInterval = nextCar.AccelerationInterval;
+                newCar.DurationOfAcceleration = nextCar.DurationOfAcceleration;
                 db.SaveChanges();
-                return RedirectToAction("ListOfRaces");
+                if (requestPathAction == "/Admin/Admin/CreateRace")
+                {
+                    return RedirectToAction("CreateRace");
+                }
+                else if(requestPathAction == "/Admin/Admin/ListOfRaces")
+                {
+                    return RedirectToAction("ListOfRaces");
+                }
+                
             }
-            return PartialView(nextCar);
+            return View(nextCar);
         }
 
         //

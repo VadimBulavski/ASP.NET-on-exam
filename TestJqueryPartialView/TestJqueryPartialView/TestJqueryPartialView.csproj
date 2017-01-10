@@ -211,6 +211,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\TestPV.cshtml" />
     <Content Include="Views\Home\TestIndex.cshtml" />
+    <Content Include="Views\Home\TestLinck.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

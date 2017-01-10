@@ -55,7 +55,7 @@
                                 </td >
                                 <td class="col-lg-1" style="background-color:blue">
                                     <input type="button" class="DetailButton" value="Details" />
-                                    <input type="button" class="EditButton" value="Edit" />
+                                    <input type="button" class="EditButton" onclick="location.href='@Url.Action("EditCar", "Admin", new { Area = "Admin", carID = item.CarID })'" value="Edit" />
                                     <input type="hidden" class="carId" value="@Html.DisplayFor(itemModel => item.CarID)" />
                                     
                                 </td>

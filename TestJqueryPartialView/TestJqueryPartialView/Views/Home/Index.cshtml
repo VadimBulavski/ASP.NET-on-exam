@@ -3,7 +3,13 @@
 }
 
 <h2>Index</h2>
-
+<input type="button" onclick="location.href='@Url.Action("TestLinck", "Home")'" value="Go to Google" />
+@*<input type="button" id="detailsButton" name="sdfsdf" onclick="links" />
+<script>
+    function links() {
+        @Html.Action("Index");
+    }
+</script>*@
 <div id="dialog">
     @Html.Partial("TestIndex")
 </div>

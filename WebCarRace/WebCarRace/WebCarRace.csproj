@@ -294,6 +294,7 @@
     <Content Include="Areas\Admin\Views\Admin\ListOfRaces.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\SearchRaceView.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\DetailsCar.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\EditCar.cshtml" />
     <None Include="Scripts\jquery-3.1.1-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />

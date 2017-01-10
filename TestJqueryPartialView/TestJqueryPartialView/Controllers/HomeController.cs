@@ -15,6 +15,12 @@ namespace TestJqueryPartialView.Controllers
         {
             return View();
         }
+
+        public ActionResult TestLinck()
+        {
+            return View();
+        }
+
         [HttpPost]
         public ActionResult TestPV()
         {

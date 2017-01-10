@@ -26,9 +26,10 @@
                                     </td>
                                     <td class="col-lg-3" style="background-color:black; width:auto">
                                         <input type="button" class="DetailButton" style="background-color:green; color:white; font-weight:bold; border-radius:10px; border-color: green" value="Details" />
-                                        <input type="button" class="EditButton" style="background-color: orange; color: white; font-weight: bold; border-radius: 10px; border-color: orange" value="Edit" />
+                                        <input type="button" class="EditButton" onclick="location.href='@Url.Action("EditCar", "Admin", new { Area = "Admin", carID = car.CarID })'" 
+                                               style="background-color: orange; color: white; font-weight: bold; border-radius: 10px; border-color: orange" value="Edit" />
                                         <input type="button" class="DeleteButton" style="background-color: red; color: white; font-weight: bold; border-radius: 10px; border-color: red" value="Delete" />
-                                        <input type="hidden" class="carId" style="visibility:" value="@Html.DisplayFor(itemModel => car.CarID)" />
+                                        <input type="hidden" class="carId" value="@Html.DisplayFor(itemModel => car.CarID)" />
                                     </td>
                                     <td class="col-lg-8" style="background-color:grey">
                                         <div style="background-color:limegreen; width:100%; position:relative;
