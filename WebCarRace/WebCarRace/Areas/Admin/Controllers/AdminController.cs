@@ -11,10 +11,15 @@ using System.Net;
 
 namespace WebCarRace.Areas.Admin.Controllers
 {
+    public static class PathAction
+    {
+        public static string RequestPathAction { get; set; }
+    }
+   
     public class AdminController : Controller
     {
         RaceCarContext db;
-        string requestPathAction = null;
+        
         private IService _service = null;
 
        
@@ -27,11 +32,13 @@ namespace WebCarRace.Areas.Admin.Controllers
         // GET: /Admin/Admin/
         public ActionResult ListOfRaces()
         {
+            PathAction.RequestPathAction = @Request.Url.Segments[3].Replace('/',' ');
             return View(_service.GetAllRaces());
         }
 
         public ActionResult CreateRace(int? id)
         {
+            PathAction.RequestPathAction = @Request.Url.Segments[3].Replace('/',' ');
             if (id != null)
             {
                 Race race = db.Races.FirstOrDefault(r => r.RaceID == id);
@@ -48,8 +55,8 @@ namespace WebCarRace.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateRace(Race race, string action)
         {
-            if(ModelState.IsValid)
-            {
+            PathAction.RequestPathAction = @Request.Url.Segments[3].Replace('/', ' '); 
+            {  
                 if (action == "Create")
                 {
                     db.Races.Add(race);
@@ -60,10 +67,6 @@ namespace WebCarRace.Areas.Admin.Controllers
                 {
                     return RedirectToAction("ListOfRaces");
                 } 
-                else if(action == "Edit")
-                {
-                    requestPathAction = @Request.Path;
-                }
             }
             return View(race);
         }
@@ -162,11 +165,11 @@ namespace WebCarRace.Areas.Admin.Controllers
                 newCar.AccelerationInterval = nextCar.AccelerationInterval;
                 newCar.DurationOfAcceleration = nextCar.DurationOfAcceleration;
                 db.SaveChanges();
-                if (requestPathAction == "/Admin/Admin/CreateRace")
+                if (PathAction.RequestPathAction == "CreateRace")
                 {
                     return RedirectToAction("CreateRace");
                 }
-                else if(requestPathAction == "/Admin/Admin/ListOfRaces")
+                else if(PathAction.RequestPathAction == "ListOfRaces")
                 {
                     return RedirectToAction("ListOfRaces");
                 }
