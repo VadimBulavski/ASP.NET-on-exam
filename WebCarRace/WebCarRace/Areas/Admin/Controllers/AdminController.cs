@@ -13,7 +13,45 @@ namespace WebCarRace.Areas.Admin.Controllers
 {
     public static class PathAction
     {
-        public static string RequestPathAction { get; set; }
+        private static string _requestSegmentUrl;
+        private static int _id;
+
+        public static int ID
+        {
+            set
+            {
+                _id = value;
+            }
+            get
+            {
+                return _id;
+            }
+        }
+        public static string RequestSegmentUrl
+        {
+            set 
+            {
+                _requestSegmentUrl = value;
+            }
+
+            get
+            {
+                return _requestSegmentUrl;
+            }
+        }
+
+        public static void GetSegmentUrl(string segmentUrl)
+        {
+            string newSegmentUrl = segmentUrl.Replace('/', ' ').Trim();
+            RequestSegmentUrl = newSegmentUrl;
+        }
+
+        public static void GetSegmentUrlId(string segmentUrl)
+        {
+            string newSegmentUrlId = segmentUrl.Replace('/', ' ').Trim();
+            ID = Int32.Parse(newSegmentUrlId);
+        }
+
     }
    
     public class AdminController : Controller
@@ -32,15 +70,17 @@ namespace WebCarRace.Areas.Admin.Controllers
         // GET: /Admin/Admin/
         public ActionResult ListOfRaces()
         {
-            PathAction.RequestPathAction = @Request.Url.Segments[3].Replace('/',' ');
+            PathAction.GetSegmentUrl(@Request.Url.Segments[3]);
             return View(_service.GetAllRaces());
         }
 
         public ActionResult CreateRace(int? id)
         {
-            PathAction.RequestPathAction = @Request.Url.Segments[3].Replace('/',' ');
+            PathAction.GetSegmentUrl(@Request.Url.Segments[3]);
+            
             if (id != null)
             {
+                PathAction.GetSegmentUrlId(@Request.Url.Segments[4]);
                 Race race = db.Races.FirstOrDefault(r => r.RaceID == id);
                 return View(race);
             }
@@ -55,8 +95,11 @@ namespace WebCarRace.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateRace(Race race, string action)
         {
-            PathAction.RequestPathAction = @Request.Url.Segments[3].Replace('/', ' '); 
-            {  
+            PathAction.GetSegmentUrl(@Request.Url.Segments[3]);
+            
+            if(ModelState.IsValid)
+            {
+               // PathAction.GetSegmentUrlId(@Request.Url.Segments[4]);
                 if (action == "Create")
                 {
                     db.Races.Add(race);
@@ -158,6 +201,7 @@ namespace WebCarRace.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                Race race = _service.GetRace(PathAction.ID);
                 var newCar= db.Cars.Where(s => s.CarID == nextCar.CarID).FirstOrDefault();
                 newCar.NameCar = nextCar.NameCar;
                 newCar.Speed = nextCar.Speed;
@@ -165,11 +209,11 @@ namespace WebCarRace.Areas.Admin.Controllers
                 newCar.AccelerationInterval = nextCar.AccelerationInterval;
                 newCar.DurationOfAcceleration = nextCar.DurationOfAcceleration;
                 db.SaveChanges();
-                if (PathAction.RequestPathAction == "CreateRace")
+                if (PathAction.RequestSegmentUrl == "CreateRace")
                 {
-                    return RedirectToAction("CreateRace");
+                    return RedirectToAction("CreateRace", new { id = race.RaceID });
                 }
-                else if(PathAction.RequestPathAction == "ListOfRaces")
+                else if(PathAction.RequestSegmentUrl == "ListOfRaces")
                 {
                     return RedirectToAction("ListOfRaces");
                 }
