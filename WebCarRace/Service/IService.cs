@@ -13,7 +13,8 @@ namespace Service
         Race GetRace(int id);
         IEnumerable<Car> GetAllCars();
         Car GetCar(int id);
-
         IEnumerable<Race> GetNameRace(string name);
+        Car RemoveCar(int id);
+        Race RemoveRace(int id);
     }
 }

@@ -40,5 +40,15 @@ namespace Repository
         {
             return _context.Races.Where(r => r.Name.Contains(name)).ToList();
         }
+
+        public DomainObject.Car RemoveCar(int id)
+        {
+            return _context.Cars.Remove(_context.Cars.Where(s => s.CarID == id).FirstOrDefault());
+        }
+
+        public DomainObject.Race RemoveRace(int id)
+        {
+            return _context.Races.Remove(_context.Races.Where(s => s.RaceID == id).FirstOrDefault());
+        }
     }
 }

@@ -39,5 +39,15 @@ namespace Service
         {
             return _repository.GetNameRace(name);
         }
+
+        public DomainObject.Car RemoveCar(int id)
+        {
+            return _repository.RemoveCar(id);
+        }
+
+        public DomainObject.Race RemoveRace(int id)
+        {
+            return _repository.RemoveRace(id);
+        }
     }
 }

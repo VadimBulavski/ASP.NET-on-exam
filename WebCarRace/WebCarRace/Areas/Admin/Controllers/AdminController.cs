@@ -29,7 +29,7 @@ namespace WebCarRace.Areas.Admin.Controllers
         }
         public static string RequestSegmentUrl
         {
-            set 
+            set
             {
                 _requestSegmentUrl = value;
             }
@@ -53,14 +53,14 @@ namespace WebCarRace.Areas.Admin.Controllers
         }
 
     }
-   
+
     public class AdminController : Controller
     {
         RaceCarContext db;
-        
+
         private IService _service = null;
 
-       
+
         public AdminController(IService service, RaceCarContext context)
         {
             _service = service;
@@ -77,7 +77,7 @@ namespace WebCarRace.Areas.Admin.Controllers
         public ActionResult CreateRace(int? id)
         {
             PathAction.GetSegmentUrl(@Request.Url.Segments[3]);
-            
+
             if (id != null)
             {
                 PathAction.GetSegmentUrlId(@Request.Url.Segments[4]);
@@ -96,10 +96,10 @@ namespace WebCarRace.Areas.Admin.Controllers
         public ActionResult CreateRace(Race race, string action)
         {
             PathAction.GetSegmentUrl(@Request.Url.Segments[3]);
-            
-            if(ModelState.IsValid)
+
+            if (ModelState.IsValid)
             {
-               // PathAction.GetSegmentUrlId(@Request.Url.Segments[4]);
+                // PathAction.GetSegmentUrlId(@Request.Url.Segments[4]);
                 if (action == "Create")
                 {
                     db.Races.Add(race);
@@ -109,7 +109,7 @@ namespace WebCarRace.Areas.Admin.Controllers
                 else if (action == "Start Race")
                 {
                     return RedirectToAction("ListOfRaces");
-                } 
+                }
             }
             return View(race);
         }
@@ -133,7 +133,7 @@ namespace WebCarRace.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult DetailsCar(int? carID)
         {
-            if(carID != null)
+            if (carID != null)
             {
                 return PartialView(_service.GetCar((int)carID));
             }
@@ -141,7 +141,7 @@ namespace WebCarRace.Areas.Admin.Controllers
             {
                 return PartialView();
             }
-           
+
         }
 
         //
@@ -161,7 +161,7 @@ namespace WebCarRace.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateCar(Car car, int id)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 Race race = _service.GetRace(id); //db.Races.FirstOrDefault(r => r.RaceID == id);
                 if (race.Cars == null)
@@ -184,7 +184,7 @@ namespace WebCarRace.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            
+
             Car nextCar = _service.GetCar((int)carID);
             if (nextCar == null)
             {
@@ -202,7 +202,7 @@ namespace WebCarRace.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 Race race = _service.GetRace(PathAction.ID);
-                var newCar= db.Cars.Where(s => s.CarID == nextCar.CarID).FirstOrDefault();
+                var newCar = db.Cars.Where(s => s.CarID == nextCar.CarID).FirstOrDefault();
                 newCar.NameCar = nextCar.NameCar;
                 newCar.Speed = nextCar.Speed;
                 newCar.DeltaAcceleration = nextCar.DeltaAcceleration;
@@ -213,37 +213,79 @@ namespace WebCarRace.Areas.Admin.Controllers
                 {
                     return RedirectToAction("CreateRace", new { id = race.RaceID });
                 }
-                else if(PathAction.RequestSegmentUrl == "ListOfRaces")
+                else if (PathAction.RequestSegmentUrl == "ListOfRaces")
                 {
                     return RedirectToAction("ListOfRaces");
                 }
-                
+
             }
             return View(nextCar);
         }
 
         //
         // GET: /Admin/Admin/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult DeleteCar(int? carID)
         {
-            return View();
+            if (carID == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Car car = _service.GetCar((int)carID);
+            if (car == null)
+            {
+                return HttpNotFound();
+            }
+            return DeleteCarConfirmed(car.CarID);
+            //return DeleteConfirmed((int)id);
         }
 
-        //
-        // POST: /Admin/Admin/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
 
-                return RedirectToAction("Index");
-            }
-            catch
+        [HttpPost, ActionName("DeleteCar")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteCarConfirmed(int id)
+        {
+            Race race = _service.GetRace(PathAction.ID);
+            _service.RemoveRace(id);
+            db.SaveChanges();
+            if (PathAction.RequestSegmentUrl == "CreateRace")
             {
-                return View();
+                return RedirectToAction("CreateRace", new { id = race.RaceID });
             }
+            return RedirectToAction("ListOfRaces");
         }
+
+        public ActionResult DeleteRace(int? raceID)
+        {
+            if (raceID == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Race race = _service.GetRace((int)raceID);
+            if (race == null)
+            {
+                return HttpNotFound();
+            }
+            return DeleteRaceConfirmed(race.RaceID);
+            //return DeleteConfirmed((int)id);
+        }
+
+
+        [HttpPost, ActionName("DeleteRace")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteRaceConfirmed(int id)
+        {
+            Race race = db.Races.Where(s => s.RaceID == id).FirstOrDefault();
+            _service.RemoveRace(id);
+            db.SaveChanges();
+            return RedirectToAction("CreateRace", new { id = race.RaceID });
+        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        db.Dispose();
+        //    }
+        //    base.Dispose(disposing);
+        //}
     }
 }

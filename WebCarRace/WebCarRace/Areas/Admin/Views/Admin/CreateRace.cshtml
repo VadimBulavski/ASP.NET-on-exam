@@ -17,7 +17,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new{ @class = "raceName" })
+                @Html.EditorFor(model => model.Name, new { @class = "raceName" })
                 @Html.ValidationMessageFor(model => model.Name)
             </div>
         </div>
@@ -25,14 +25,14 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Distance, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Distance, new{ @class = "distance" })
+                @Html.EditorFor(model => model.Distance, new { @class = "distance" })
                 @Html.ValidationMessageFor(model => model.Distance)
             </div>
         </div>
 
         <div class="form-group">
             <div id="create" class="col-md-offset-2 col-md-10">
-                <input type="submit" name="action" value="Create" id ="createRace" class="btn btn-default" />
+                <input type="submit" name="action" value="Create" id="createRace" class="btn btn-default" />
             </div>
         </div>
 
@@ -41,7 +41,7 @@
             <div class="form-group" style="margin-left:8%; font-size:14pt">
                 @Html.ActionLink("+ Add Car", "CreateCar", new { controller = "Admin", area = "Admin", id = Model.RaceID })
             </div>
-            
+
             <div>
                 @if (Model.Cars != null)
                 {
@@ -50,18 +50,22 @@
                     {
                         <table class="table">
                             <tr class="row">
-                                <td class ="col-lg-1" style="background-color:blue; color:white; font-size:14pt">
+                                <td class="col-lg-1" style="background-color:black; color:white; font-size:14pt">
                                     @Html.DisplayFor(itemModel => item.NameCar)
-                                </td >
-                                <td class="col-lg-1" style="background-color:blue">
-                                    <input type="button" class="DetailButton" value="Details" />
-                                    <input type="button" class="EditButton" onclick="location.href='@Url.Action("EditCar", "Admin", new { Area = "Admin", carID = item.CarID })'" value="Edit" />
-                                    <input type="hidden" class="carId" value="@Html.DisplayFor(itemModel => item.CarID)" />
-                                    
                                 </td>
-                                <td class="col-lg-10" style="background-color:grey">
-                                    <div style="background-color:orange; width:100%; position:relative;
-                                                color:white; font-size:14pt; text-align:left">
+                                <td class="col-lg-2" style="background-color: black; width: auto">
+                                    <input type="button" class="DetailButton" style="background-color:green; color:white; font-weight:bold; border-radius:10px; border-color: green" value="Details" />
+                                    <input type="button" class="EditButton" onclick="location.href='@Url.Action("EditCar", "Admin", new { Area = "Admin", carID = item.CarID })'"
+                                           style="background-color:yellow; color:white; font-weight:bold; border-radius:10px; border-color: yellow" value="Edit" />
+                                    <input type="button" class="DeleteButton" style="background-color: red; color: white; font-weight: bold;
+                                           border-radius: 10px; border-color: red" onclick="location.href='@Url.Action("DeleteCar", "Admin", new { Area = "Admin", carID = item.CarID })'" 
+                                           value="Delete" />
+                                    <input type="hidden" class="carId" value="@Html.DisplayFor(itemModel => item.CarID)" />
+
+                                </td>
+                                <td class="col-lg-9" style="background-color:grey">
+                                    <div style="background-color: limegreen; width: 100%; position: relative; color: white;
+                                                font-size: 14pt; text-align: left">
                                         Distance:
                                         @Html.DisplayFor(itemModel => item.Distance) km
                                     </div>
@@ -79,29 +83,31 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
+                <input type="button" name="action" value="Delete Race" class="btn btn-default" 
+                       onclick="location.href='@Url.Action("DeleteRace", "Admin", new { Area = "Admin", raceID = Model.RaceID })'" />
                 <input type="submit" name="action" value="Start Race" class="btn btn-default" />
             </div>
         </div>
     </div>
-    
+
     @section scripts
 {
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jquery-ui")
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/jquery-ui")
 
-    <script>
-        $(document).ready(function () {
-            $(".DetailButton").click(function () {
-                var carId = $(this).siblings('.carId').val();
-                var $details = $(this).parents('table').next();
-                $.post('@Url.Action("DetailsCar", "Admin", new {Area = "Admin"})', { carID: carId }, function (data) {
-                    $details.html(data);
-                    $details.toggle(1000);
-                });  
+        <script>
+            $(document).ready(function () {
+                $(".DetailButton").click(function () {
+                    var carId = $(this).siblings('.carId').val();
+                    var $details = $(this).parents('table').next();
+                    $.post('@Url.Action("DetailsCar", "Admin", new {Area = "Admin"})', { carID: carId }, function (data) {
+                        $details.html(data);
+                        $details.toggle(1000);
+                    });
+                });
             });
-        });
 
-        @*$(document).ready(function () {
+            @*$(document).ready(function () {
             $("#dialogCreateRace").dialog({
                 autoOpen: false,
                 hide: "puff",
@@ -143,8 +149,8 @@
                 });
             });
         });*@
-    </script>
-}
+        </script>
+    }
 
 }
 
