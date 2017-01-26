@@ -8,9 +8,52 @@ using Repository;
 using RaceContext;
 using Service;
 using System.Net;
+using System.Threading;
 
 namespace WebCarRace.Areas.Admin.Controllers
 {
+    public class BackgroundThread
+    {
+        private static int _timerinterval;
+        private static Timer timer;
+        public BackgroundThread(Race race)
+        {
+            _timerinterval = 5000;
+            TimerCallback tcb = new TimerCallback(CalculationOfIndicators);
+            timer = new Timer(tcb, race, 0, _timerinterval);
+        }
+        
+        public static void CalculationOfIndicators(object obj)
+        {
+            Race race = obj as Race;
+            for(int i = 0; i < race.Cars.Count; ++i)
+            {
+                int breakpoint = race.Cars[i].AccelerationInterval + race.Cars[i].DurationOfAcceleration;
+                if(race.Cars[i].AccelerationInterval == _timerinterval)
+                {
+                    race.Cars[i].Speed += race.Cars[i].Speed * race.Cars[i].DeltaAcceleration;  
+                }
+                if(breakpoint == _timerinterval)
+                {
+                    race.Cars[i].Speed -= race.Cars[i].Speed * race.Cars[i].DeltaAcceleration;
+                    race.Cars[i].AccelerationInterval += race.Cars[i].AccelerationInterval;
+                }
+                race.Cars[i].Distance = race.Cars[i].Speed * _timerinterval;
+                if(race.Cars[i].Distance == race.Distance)
+                {
+                    DisposeTimer();
+                }
+            }
+            _timerinterval += _timerinterval;
+        }
+
+        public static void DisposeTimer()
+        {
+            _timerinterval = 0;
+            timer.Dispose();
+        }
+    }
+
     public static class PathAction
     {
         private static string _requestSegmentUrl;
@@ -84,11 +127,11 @@ namespace WebCarRace.Areas.Admin.Controllers
                 Race race = db.Races.FirstOrDefault(r => r.RaceID == id);
                 return View(race);
             }
-            else
-            {
-                return View();
-            }
-            //return View();
+            //else
+            //{
+            //    return View();
+            //}
+            return View(new Race());
         }
 
         [HttpPost]
@@ -108,6 +151,7 @@ namespace WebCarRace.Areas.Admin.Controllers
                 }
                 else if (action == "Start Race")
                 {
+                    BackgroundThread bct = new BackgroundThread(race);
                     return RedirectToAction("ListOfRaces");
                 }
             }
