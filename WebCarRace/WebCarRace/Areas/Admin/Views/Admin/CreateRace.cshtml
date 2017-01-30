@@ -36,7 +36,7 @@
             </div>
         </div>
 
-        @*@if (Model != null && Html.ViewData.ModelState.IsValid)
+        @if (Model != null && Html.ViewData.ModelState.IsValid)
         {
             <div class="form-group" style="margin-left:8%; font-size:14pt">
                 @Html.ActionLink("+ Add Car", "CreateCar", new { controller = "Admin", area = "Admin", id = Model.RaceID })
@@ -56,7 +56,7 @@
                                 <td class="col-lg-2" style="background-color: black; width: auto">
                                     <input type="button" class="DetailButton" style="background-color:green; color:white; font-weight:bold; border-radius:10px; border-color: green" value="Details" />
                                     <input type="button" class="EditButton" onclick="location.href='@Url.Action("EditCar", "Admin", new { Area = "Admin", carID = item.CarID })'"
-                                           style="background-color:yellow; color:white; font-weight:bold; border-radius:10px; border-color: yellow" value="Edit" />
+                                           style="background-color: orange; color:white; font-weight:bold; border-radius:10px; border-color: orange" value="Edit" />
                                     <input type="button" class="DeleteButton" style="background-color: red; color: white; font-weight: bold;
                                            border-radius: 10px; border-color: red" onclick="location.href='@Url.Action("DeleteCar", "Admin", new { Area = "Admin", carID = item.CarID })'" 
                                            value="Delete" />
@@ -78,13 +78,15 @@
                     }
                 }
             </div>
-        }*@
+        }
 
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="button" name="action" value="Delete Race" class="btn btn-default" 
-                       onclick="location.href='@Url.Action("DeleteRace", "Admin", new { Area = "Admin", raceID = Model.RaceID })'" />
+                @if(Model != null){
+                   <input type="button" name="action" value="Delete Race" class="btn btn-default" 
+                       onclick="location.href='@Url.Action("DeleteRace", "Admin", new { Area = "Admin", raceID = Model.RaceID })'" /> 
+                }
                 <input type="submit" name="action" value="Start Race" class="btn btn-default" />
             </div>
         </div>
@@ -107,51 +109,6 @@
                     });
                 });
             });
-
-            @*$(document).ready(function () {
-            $("#dialogCreateRace").dialog({
-                autoOpen: false,
-                hide: "puff",
-                show: "slide",
-                bgiframe: true,
-                width: 'auto',
-                height: 'auto',
-                modal: true,
-                buttons: [
-                    {
-                        text: "Close",
-                        click: function () {
-                            $(this).dialog("close");
-                        }
-                    },
-                     {
-                         text: "Update",
-                         click: function () {
-                             $.post('@Url.Action("Edit", "Admin", new {Area = "Admin"})',
-                                 {
-                                     CarId: data.CarID,
-                                     NameCar: data.NameCar,
-                                     Speed: data.Speed,
-                                     Distance: data.Distance,
-                                     DeltaAcceleration: data.DeltaAcceleration,
-                                     AccelerationInterval: data.AccelerationInterval,
-                                     DurationOfAcceleration: data.DurationOfAcceleration
-                                 });
-                         }
-                     }
-                ]
-            });
-            $(".EditButton").click(function () {
-                var carId = $(this).siblings('.carId').val();
-                var $details = $(this).parents('table').next();
-                $.get('@Url.Action("Edit", "Admin", new {Area = "Admin"})', { carID: carId }, function (data) {
-                    $("#dialogCreateRace").html(data);
-                    $("#dialogCreateRace").dialog("open");
-                });
-            });
-        });*@
         </script>
-    }
-
 }
 

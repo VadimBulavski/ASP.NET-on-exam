@@ -45,8 +45,10 @@ namespace WebCarRace.Areas.Admin.Controllers
                 }
             }
             _timerinterval += _timerinterval;
+            
         }
-
+        
+        
         public static void DisposeTimer()
         {
             _timerinterval = 0;
@@ -100,7 +102,6 @@ namespace WebCarRace.Areas.Admin.Controllers
     public class AdminController : Controller
     {
         RaceCarContext db;
-
         private IService _service = null;
 
 
@@ -120,18 +121,16 @@ namespace WebCarRace.Areas.Admin.Controllers
         public ActionResult CreateRace(int? id)
         {
             PathAction.GetSegmentUrl(@Request.Url.Segments[3]);
-
             if (id != null)
             {
                 PathAction.GetSegmentUrlId(@Request.Url.Segments[4]);
                 Race race = db.Races.FirstOrDefault(r => r.RaceID == id);
                 return View(race);
             }
-            //else
-            //{
-            //    return View();
-            //}
-            return View(new Race());
+            else
+            {
+                return View();
+            }
         }
 
         [HttpPost]
@@ -331,5 +330,7 @@ namespace WebCarRace.Areas.Admin.Controllers
         //    }
         //    base.Dispose(disposing);
         //}
+
+
     }
 }
