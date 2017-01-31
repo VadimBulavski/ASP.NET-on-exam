@@ -9,6 +9,7 @@ using RaceContext;
 using Service;
 using System.Net;
 using System.Threading;
+using System.Data.Entity;
 
 namespace WebCarRace.Areas.Admin.Controllers
 {
@@ -16,16 +17,21 @@ namespace WebCarRace.Areas.Admin.Controllers
     {
         private static int _timerinterval;
         private static Timer timer;
-        public BackgroundThread(Race race)
+        private static Controller _controller;
+        private static RaceCarContext _context;
+        public BackgroundThread(int id, Controller controller, RaceCarContext context)
         {
             _timerinterval = 5000;
+            _controller = controller;
+            _context = context;
             TimerCallback tcb = new TimerCallback(CalculationOfIndicators);
-            timer = new Timer(tcb, race, 0, _timerinterval);
+            timer = new Timer(tcb, id, 0, _timerinterval);
         }
         
         public static void CalculationOfIndicators(object obj)
         {
-            Race race = obj as Race;
+            int id = (int)obj;
+            Race race = _context.Races.Where(s => s.RaceID == id).FirstOrDefault();
             for(int i = 0; i < race.Cars.Count; ++i)
             {
                 int breakpoint = race.Cars[i].AccelerationInterval + race.Cars[i].DurationOfAcceleration;
@@ -45,6 +51,8 @@ namespace WebCarRace.Areas.Admin.Controllers
                 }
             }
             _timerinterval += _timerinterval;
+            _context.SaveChanges();
+            _controller.Response.Redirect("http://localhost:15444/Admin/Admin/ListOfRaces");
             
         }
         
@@ -150,7 +158,7 @@ namespace WebCarRace.Areas.Admin.Controllers
                 }
                 else if (action == "Start Race")
                 {
-                    BackgroundThread bct = new BackgroundThread(race);
+                    BackgroundThread bct = new BackgroundThread(race, new AdminController(_service, db));
                     return RedirectToAction("ListOfRaces");
                 }
             }
