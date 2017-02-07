@@ -17,12 +17,10 @@ namespace WebCarRace.Areas.Admin.Controllers
     {
         private static int _timerinterval;
         private static Timer timer;
-        private static Controller _controller;
         private static RaceCarContext _context;
-        public BackgroundThread(int id, Controller controller, RaceCarContext context)
+        public BackgroundThread(int id, RaceCarContext context)
         {
-            _timerinterval = 5000;
-            _controller = controller;
+            _timerinterval = 8000;
             _context = context;
             TimerCallback tcb = new TimerCallback(CalculationOfIndicators);
             timer = new Timer(tcb, id, 0, _timerinterval);
@@ -51,9 +49,7 @@ namespace WebCarRace.Areas.Admin.Controllers
                 }
             }
             _timerinterval += _timerinterval;
-            _context.SaveChanges();
-            _controller.Response.Redirect("http://localhost:15444/Admin/Admin/ListOfRaces");
-            
+            _context.SaveChanges();        
         }
         
         
@@ -158,7 +154,7 @@ namespace WebCarRace.Areas.Admin.Controllers
                 }
                 else if (action == "Start Race")
                 {
-                    BackgroundThread bct = new BackgroundThread(race, new AdminController(_service, db));
+                    BackgroundThread bct = new BackgroundThread(race.RaceID, db);
                     return RedirectToAction("ListOfRaces");
                 }
             }

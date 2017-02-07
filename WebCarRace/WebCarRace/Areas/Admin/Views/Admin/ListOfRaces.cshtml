@@ -44,62 +44,17 @@
                 $details.toggle(1000);
             });
         });
-
-
-        //вызов окна для редактирования показателей
-        @*$(function () {
-            $("#dialogListOfRace").dialog({
-                autoOpen: false,
-                hide: "puff",
-                show: "slide",
-                bgiframe: true,
-                width: 'auto',
-                height: 'auto',
-                modal: true,
-                buttons: [
-                    {
-                        text: "Close",
-                        click: function () {
-                            $(this).dialog("close");
-                        }
-                    },
-                     {
-                         text: "Update",
-                         click: function () {
-                             var car = {
-                                 CarId: $("#CarID").val(),
-                                 NameCar: $("#NameCar").val(),
-                                 Speed: $("#Speed").val(),
-                                 Distance: $("#Distance").val(),
-                                 DeltaAcceleration: $("#DeltaAcceleration").val(),
-                                 AccelerationInterval: $("#AccelerationInterval").val(),
-                                 DurationOfAcceleration: $("#DurationOfAcceleration").val(),
-                             };
-                             $.post('@Url.Action("Edit", "Admin", new {Area = "Admin"})',
-                                                               {
-                                                                   Car: car
-                                                               });
-                             //var ok = confirm("Save the Changes?");
-
-                             //if (ok) {
-                                
-                             //    $(this).dialog("close");
-                             //}
-                         }
-                     }
-                ]
-            });
-
-            $("#update").on('click', '.EditButton', function () {
-                var carId = $(this).siblings('.carId').val();
-                var $details = $(this).parents('table').next();
-                $.get('@Url.Action("Edit", "Admin", new {Area = "Admin"})', { carID: carId }, function (data) {
-                    $("#dialogListOfRace").html(data);
-                    $("#dialogListOfRace").dialog("open");
-                    alert(data);
-                });
-            });
-        });*@
-
+    </script>
+    <script>
+        var i = 10;
+        function time()
+        {
+            document.getElementById("dialogListOfRace").innerHTML = i;
+            i--;
+            if (i < 0)
+                location.href = "http://localhost:15444/Admin/Admin/ListOfRaces";
+        }
+        time();
+        setInterval(time, 1000);
     </script>
 }
