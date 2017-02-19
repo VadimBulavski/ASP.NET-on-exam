@@ -16,40 +16,52 @@ namespace WebCarRace.Areas.Admin.Controllers
     public class BackgroundThread
     {
         private static int _timerinterval;
+        private static int increasinginterval;
+        private static int _id;
         private static Timer timer;
         private static RaceCarContext _context;
         public BackgroundThread(int id, RaceCarContext context)
         {
-            _timerinterval = 8000;
+            _id = id;
+            _timerinterval = 5000;
+            increasinginterval = _timerinterval;
             _context = context;
+            
             TimerCallback tcb = new TimerCallback(CalculationOfIndicators);
-            timer = new Timer(tcb, id, 0, _timerinterval);
+            timer = new Timer(tcb, _id, 5000, _timerinterval);
         }
         
         public static void CalculationOfIndicators(object obj)
         {
             int id = (int)obj;
             Race race = _context.Races.Where(s => s.RaceID == id).FirstOrDefault();
-            for(int i = 0; i < race.Cars.Count; ++i)
+            if(race.Cars != null)
             {
-                int breakpoint = race.Cars[i].AccelerationInterval + race.Cars[i].DurationOfAcceleration;
-                if(race.Cars[i].AccelerationInterval == _timerinterval)
+                for (int i = 0; i < race.Cars.Count; ++i)
                 {
-                    race.Cars[i].Speed += race.Cars[i].Speed * race.Cars[i].DeltaAcceleration;  
+                    //----ДЛЯ БУДУЩЕ МОДИФИКАЦИИ-----
+
+                    //int breakpoint = race.Cars[i].AccelerationInterval + race.Cars[i].DurationOfAcceleration;
+                    //if (race.Cars[i].AccelerationInterval >= _timerinterval)
+                    //{
+                    //    race.Cars[i].Speed += race.Cars[i].Speed * race.Cars[i].DeltaAcceleration/100;
+                    //}
+                    //if (breakpoint <= _timerinterval)
+                    //{
+                    //    race.Cars[i].Speed -= race.Cars[i].Speed * race.Cars[i].DeltaAcceleration/100;
+                    //    race.Cars[i].AccelerationInterval += race.Cars[i].AccelerationInterval;
+                    //}
+
+
+                    race.Cars[i].Distance = (race.Cars[i].Speed * increasinginterval)/3600000;
+                    if (race.Cars[i].Distance >= race.Distance)
+                    {
+                        DisposeTimer();
+                    }
                 }
-                if(breakpoint == _timerinterval)
-                {
-                    race.Cars[i].Speed -= race.Cars[i].Speed * race.Cars[i].DeltaAcceleration;
-                    race.Cars[i].AccelerationInterval += race.Cars[i].AccelerationInterval;
-                }
-                race.Cars[i].Distance = race.Cars[i].Speed * _timerinterval;
-                if(race.Cars[i].Distance == race.Distance)
-                {
-                    DisposeTimer();
-                }
-            }
-            _timerinterval += _timerinterval;
-            _context.SaveChanges();        
+                increasinginterval += _timerinterval;
+                _context.SaveChanges();    
+            }   
         }
         
         
@@ -145,7 +157,6 @@ namespace WebCarRace.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                // PathAction.GetSegmentUrlId(@Request.Url.Segments[4]);
                 if (action == "Create")
                 {
                     db.Races.Add(race);
@@ -154,7 +165,7 @@ namespace WebCarRace.Areas.Admin.Controllers
                 }
                 else if (action == "Start Race")
                 {
-                    BackgroundThread bct = new BackgroundThread(race.RaceID, db);
+                    BackgroundThread bct = new BackgroundThread(PathAction.ID, db);
                     return RedirectToAction("ListOfRaces");
                 }
             }
@@ -195,10 +206,6 @@ namespace WebCarRace.Areas.Admin.Controllers
         // GET: /Admin/Admin/Create
         public ActionResult CreateCar()
         {
-            //if(id != null)
-            //{
-            //    db.Races.Where(r => r.RaceID == id);
-            //}
             return View();
         }
 
@@ -210,13 +217,12 @@ namespace WebCarRace.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                Race race = _service.GetRace(id); //db.Races.FirstOrDefault(r => r.RaceID == id);
+                Race race = _service.GetRace(id); 
                 if (race.Cars == null)
                 {
                     race.Cars = new List<Car>();
                 }
                 race.Cars.Add(car);
-                //db.Cars.Add(car);
                 db.SaveChanges();
                 return RedirectToAction("CreateRace", new { id = race.RaceID });
             }
@@ -252,9 +258,13 @@ namespace WebCarRace.Areas.Admin.Controllers
                 var newCar = db.Cars.Where(s => s.CarID == nextCar.CarID).FirstOrDefault();
                 newCar.NameCar = nextCar.NameCar;
                 newCar.Speed = nextCar.Speed;
-                newCar.DeltaAcceleration = nextCar.DeltaAcceleration;
-                newCar.AccelerationInterval = nextCar.AccelerationInterval;
-                newCar.DurationOfAcceleration = nextCar.DurationOfAcceleration;
+
+                //----ДЛЯ МОДИФИКАЦИИ----
+                //newCar.DeltaAcceleration = nextCar.DeltaAcceleration;
+                //newCar.AccelerationInterval = nextCar.AccelerationInterval;
+                //newCar.DurationOfAcceleration = nextCar.DurationOfAcceleration;
+
+
                 db.SaveChanges();
                 if (PathAction.RequestSegmentUrl == "CreateRace")
                 {
@@ -283,7 +293,6 @@ namespace WebCarRace.Areas.Admin.Controllers
                 return HttpNotFound();
             }
             return DeleteCarConfirmed(car.CarID);
-            //return DeleteConfirmed((int)id);
         }
 
 
@@ -292,7 +301,7 @@ namespace WebCarRace.Areas.Admin.Controllers
         public ActionResult DeleteCarConfirmed(int id)
         {
             Race race = _service.GetRace(PathAction.ID);
-            _service.RemoveRace(id);
+            _service.RemoveCar(id);
             db.SaveChanges();
             if (PathAction.RequestSegmentUrl == "CreateRace")
             {
@@ -313,7 +322,6 @@ namespace WebCarRace.Areas.Admin.Controllers
                 return HttpNotFound();
             }
             return DeleteRaceConfirmed(race.RaceID);
-            //return DeleteConfirmed((int)id);
         }
 
 
@@ -326,15 +334,5 @@ namespace WebCarRace.Areas.Admin.Controllers
             db.SaveChanges();
             return RedirectToAction("CreateRace", new { id = race.RaceID });
         }
-        //protected override void Dispose(bool disposing)
-        //{
-        //    if (disposing)
-        //    {
-        //        db.Dispose();
-        //    }
-        //    base.Dispose(disposing);
-        //}
-
-
     }
 }

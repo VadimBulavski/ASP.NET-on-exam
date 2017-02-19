@@ -14,9 +14,12 @@ namespace DomainObject
         public string NameCar { get; set; }
         public double Speed { get; set; }
         public double Distance { get; set; }
-        public double DeltaAcceleration { get; set; }
-        public int AccelerationInterval { get; set; }
-        public int DurationOfAcceleration { get; set; }
+
+        //----ДЛЯ БУДУЩЕ МОДИФИКАЦИИ---
+
+        //public double DeltaAcceleration { get; set; }
+        //public int AccelerationInterval { get; set; }
+        //public int DurationOfAcceleration { get; set; }
 
         public Race RaceID { get; set; }
     }

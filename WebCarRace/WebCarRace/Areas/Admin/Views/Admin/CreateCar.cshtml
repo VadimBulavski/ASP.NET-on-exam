@@ -28,7 +28,9 @@
             </div>
         </div>
 
-        <div class="form-group">
+        @*-----ДЛЯ БУДУЩЕ МОДИФИКАЦИИ-----*@
+
+        @*<div class="form-group">
             @Html.LabelFor(model => model.DeltaAcceleration, "DeltaAcceleration %", new { @class = "control-label col-md-2" }) 
             <div class="col-md-10">
                 @Html.EditorFor(model => model.DeltaAcceleration)
@@ -50,17 +52,7 @@
                 @Html.EditorFor(model => model.DurationOfAcceleration)
                 @Html.ValidationMessageFor(model => model.DurationOfAcceleration)
             </div>
-        </div>
-        @*<div class="form-group">
-            @Html.ActionLink()
-           @Html.LabelFor(model => model.Hot, new { @class = "control-label col-md-2" })
-                *<div class="col-md-10">
-                    @Html.EditorFor(model => model.Hot)
-                    @Html.ValidationMessageFor(model => model.Hot)
-                </div>
         </div>*@
-
-
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

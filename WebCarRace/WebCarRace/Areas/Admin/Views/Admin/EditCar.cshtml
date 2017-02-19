@@ -27,7 +27,10 @@
             @Html.EditorFor(model => model.Speed)
             @Html.ValidationMessageFor(model => model.Speed)
         </dd>
-        <dt>
+
+        @* ----ДЛЯ БУДУЩЕ МОДИФИКАЦИИ----- *@
+
+        @*<dt>
             @Html.DisplayNameFor(model => model.DeltaAcceleration):
         </dt>
         <dd>
@@ -47,7 +50,8 @@
         <dd>
             @Html.EditorFor(model => model.DurationOfAcceleration)
             @Html.ValidationMessageFor(model => model.DurationOfAcceleration)
-        </dd>
+        </dd>*@
+
     </dl>
     @Html.HiddenFor(model => model.CarID)
     @Html.HiddenFor(model => model.Distance)

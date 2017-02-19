@@ -290,7 +290,6 @@
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Admin\Views\Admin\CreateRace.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\CreateCar.cshtml" />
-    <Content Include="Areas\Admin\Views\Admin\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\ListOfRaces.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\SearchRaceView.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\DetailsCar.cshtml" />
